@@ -14,8 +14,10 @@ import java.util.Scanner;
 import java.util.Set;
 
 import com.example.qi.utils.MessageParser;
+
 /**
  * 消息处理
+ * 
  * @author Administrator
  *
  */
@@ -24,8 +26,9 @@ public class ServerHandler implements Runnable {
 	private Selector selector;
 	private InetSocketAddress inetSocketAddress;
 	private Set<SocketChannel> sockets = new HashSet<SocketChannel>();
+
 	public ServerHandler(int port) {
-		inetSocketAddress = new InetSocketAddress("127.0.0.1", 5555);
+		inetSocketAddress = new InetSocketAddress("172.26.52.1", port);
 	}
 
 	@Override
@@ -69,8 +72,9 @@ public class ServerHandler implements Runnable {
 
 	/**
 	 * 从通道中读取消息
+	 * 
 	 * @param key
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void readable(SelectionKey key) throws Exception {
 		Charset charset = Charset.defaultCharset();
@@ -78,17 +82,18 @@ public class ServerHandler implements Runnable {
 		StringBuffer sb = new StringBuffer();
 		ByteBuffer dst = ByteBuffer.allocate(4 * 1024);
 		int len = 0;
-		while((len = sc.read(dst))!=-1){
+		while ((len = sc.read(dst)) != 0) {
 			dst.flip();
 			sb.append(charset.decode(dst));
 			dst.clear();
 		}
 		System.out.println("客户端：" + sb.toString());
-		MessageParser.parse(sb,sc);
+		MessageParser.parse(sb, sc);
 	}
 
 	/**
 	 * 接收客户端socket
+	 * 
 	 * @param key
 	 * @throws IOException
 	 */
