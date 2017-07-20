@@ -5,7 +5,10 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Map.Entry;
-
+/**
+ * @author Administrator
+ *
+ */
 public class MessageParser {
 
 	public static final HashMap<String, SocketChannel> socketChannels = new HashMap<>();
@@ -41,6 +44,7 @@ public class MessageParser {
 			}
 		}
 		if (typePair.second().equals("login")) {
+			socketChannels.remove(fromPair.second());
 			socketChannels.put(fromPair.second(), sc);
 		} else if (typePair.second().equals("chat")) {
 			// 如果类型为send，则代表客户端想发送消息给他人，账号为其他客户端账号
